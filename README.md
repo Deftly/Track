@@ -1,5 +1,18 @@
 # Track
 
+<!--toc:start-->
+- [Track](#track)
+  - [DSA](#dsa)
+    - [Leetcode](#leetcode)
+  - [System Design](#system-design)
+  - [Certs](#certs)
+    - [Red Hat](#red-hat)
+    - [Linux Foundation](#linux-foundation)
+    - [HashiCorp](#hashicorp)
+  - [Projects](#projects)
+  - [Additional Resources](#additional-resources)
+<!--toc:end-->
+
 ## DSA
 
 ### Leetcode
@@ -13,6 +26,9 @@
 |242|[Valid Anagram](/dsa/go/lc/0242/README.md)||Easy|Not-Started|
 |271|[Encode and Decode Strings](/dsa/go/lc/0271/README.md)||Medium|Not-Started|
 |347|[Top K Frequent Elements](/dsa/go/lc/0347/README.md)||Medium|Not-Started|
+
+### Notes
+- [Primeagen](/dsa/notes/primeagen/README.md)
 
 ## System Design
 
