@@ -26,5 +26,5 @@ Output: [0,1]
 **Constraints:**
 - <code>2 <= nums.length <= 10<sup>4</sup></code>
 - <code>-10<sup>9</sup> <= nums[i] <= 10<sup>9</sup></code>
-- <code>-10<sup>9<sup> <= target <= 10<sup>9</sup></code>
+- <code>-10<sup>9</sup> <= target <= 10<sup>9</sup></code>
 - Only one valid answer exists.
