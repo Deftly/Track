@@ -19,24 +19,24 @@
 ### Leetcode
 | # | Problem | Solution | Difficulty | Status |
 |---|---------|----------|------------|--------|
-|1|[Two Sum](/dsa/go/lc/0001/)||Easy|Not-Started|
-|3|[Longest Substring Without Repeating Characters](/dsa/go/lc/0003/)||Medium|Not-Started|
-|11|[Container With Most Water](/dsa/go/lc/0011/)||Medium|Not-Started|
-|15|[3Sum](/dsa/go/lc/0015/)||Medium|Not-Started|
-|49|[Group Anagrams](/dsa/go/lc/0049/)||Medium|Not-Started|
-|76|[Minimum Window Substring](/dsa/go/lc/0076/)||Hard|Not-Started|
-|121|[Best Time to Buy and Sell Stock](/dsa/go/lc/0121/)||Easy|Not-Started|
-|125|[Valid Palindrome](/dsa/go/lc/0125/)||Easy|Not-Started|
-|128|[Longest Consecutive Sequence](/dsa/go/lc/0128/)||Medium|Not-Started|
-|217|[Contains Duplicate](/dsa/go/lc/0217/)||Easy|Not-Started|
-|238|[Product of Array Except Self](/dsa/go/lc/0238/)||Medium|Not-Started|
-|242|[Valid Anagram](/dsa/go/lc/0242/)||Easy|Not-Started|
-|271|[Encode and Decode Strings](/dsa/go/lc/0271/)||Medium|Not-Started|
-|347|[Top K Frequent Elements](/dsa/go/lc/0347/)||Medium|Not-Started|
-|424|[Longest Repeating Character Replacement](/dsa/go/lc/0424/)||Medium|Not-Started|
+|1|[Two Sum](./dsa/lc/0001/)|[Go](./dsa/lc/0001/go/twoSum.go)|Easy|Not-Started|
+|3|[Longest Substring Without Repeating Characters](./dsa/lc/0003/)||Medium|Not-Started|
+|11|[Container With Most Water](./dsa/lc/0011/)||Medium|Not-Started|
+|15|[3Sum](./dsa/lc/0015/)||Medium|Not-Started|
+|49|[Group Anagrams](./dsa/lc/0049/)||Medium|Not-Started|
+|76|[Minimum Window Substring](./dsa/lc/0076/)||Hard|Not-Started|
+|121|[Best Time to Buy and Sell Stock](./dsa/lc/0121/)||Easy|Not-Started|
+|125|[Valid Palindrome](./dsa/lc/0125/)||Easy|Not-Started|
+|128|[Longest Consecutive Sequence](./dsa/lc/0128/)||Medium|Not-Started|
+|217|[Contains Duplicate](./dsa/lc/0217/)|[Go](./dsa/lc/0217/go/containsDuplicate.go)|Easy|Not-Started|
+|238|[Product of Array Except Self](./dsa/lc/0238/)||Medium|Not-Started|
+|242|[Valid Anagram](./dsa/lc/0242/)|[Go](./dsa/lc/0242/go/validAnagram.go)|Easy|Not-Started|
+|271|[Encode and Decode Strings](./dsa/lc/0271/)||Medium|Not-Started|
+|347|[Top K Frequent Elements](./dsa/lc/0347/)||Medium|Not-Started|
+|424|[Longest Repeating Character Replacement](./dsa/lc/0424/)||Medium|Not-Started|
 
 ### Notes
-[C.L.R.S - Algorithms](/dsa/notes/clrs/README.md)
+[C.L.R.S - Algorithms](./dsa/notes/clrs/README.md)
 
 ## System Design
 

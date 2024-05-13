@@ -50,7 +50,7 @@ func isAnagramRuneV2(s string, t string) bool {
 		return false
 	}
 
-	characters := make(map[rune]int)
+	characters := make(map[rune]int, len(s))
 	for _, r := range s {
 		characters[r]++
 	}
