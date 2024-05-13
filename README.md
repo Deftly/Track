@@ -19,7 +19,7 @@
 ### Leetcode
 | # | Problem | Solution | Difficulty | Status |
 |---|---------|----------|------------|--------|
-|1|[Two Sum](/dsa/go/lc/0001/README.md)||Easy|Not-Started|
+|1|[Two Sum](/dsa/go/lc/0001/)||Easy|Not-Started|
 |3|[Longest Substring Without Repeating Characters](/dsa/go/lc/0003/README.md)||Medium|Not-Started|
 |11|[Container With Most Water](/dsa/go/lc/0011/README.md)||Medium|Not-Started|
 |15|[3Sum](/dsa/go/lc/0015/README.md)||Medium|Not-Started|
