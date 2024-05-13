@@ -4,6 +4,7 @@
 - [Track](#track)
   - [DSA](#dsa)
     - [Leetcode](#leetcode)
+    - [Notes](#notes)
   - [System Design](#system-design)
   - [Certs](#certs)
     - [Red Hat](#red-hat)
@@ -28,7 +29,7 @@
 |347|[Top K Frequent Elements](/dsa/go/lc/0347/README.md)||Medium|Not-Started|
 
 ### Notes
-- [Primeagen](/dsa/notes/primeagen/README.md)
+[C.L.R.S - Algorithms](/dsa/notes/clrs/README.md)
 
 ## System Design
 
