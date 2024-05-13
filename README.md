@@ -20,20 +20,20 @@
 | # | Problem | Solution | Difficulty | Status |
 |---|---------|----------|------------|--------|
 |1|[Two Sum](/dsa/go/lc/0001/)||Easy|Not-Started|
-|3|[Longest Substring Without Repeating Characters](/dsa/go/lc/0003/README.md)||Medium|Not-Started|
-|11|[Container With Most Water](/dsa/go/lc/0011/README.md)||Medium|Not-Started|
-|15|[3Sum](/dsa/go/lc/0015/README.md)||Medium|Not-Started|
-|49|[Group Anagrams](/dsa/go/lc/0049/README.md)||Medium|Not-Started|
-|76|[Minimum Window Substring](/dsa/go/lc/0076/README.md)||Hard|Not-Started|
-|121|[Best Time to Buy and Sell Stock](/dsa/go/lc/0121/README.md)||Easy|Not-Started|
-|125|[Valid Palindrome](/dsa/go/lc/0125/README.md)||Easy|Not-Started|
-|128|[Longest Consecutive Sequence](/dsa/go/lc/0128/README.md)||Medium|Not-Started|
-|217|[Contains Duplicate](/dsa/go/lc/0217/README.md)||Easy|Not-Started|
-|238|[Product of Array Except Self](/dsa/go/lc/0238/README.md)||Medium|Not-Started|
-|242|[Valid Anagram](/dsa/go/lc/0242/README.md)||Easy|Not-Started|
-|271|[Encode and Decode Strings](/dsa/go/lc/0271/README.md)||Medium|Not-Started|
-|347|[Top K Frequent Elements](/dsa/go/lc/0347/README.md)||Medium|Not-Started|
-|424|[Longest Repeating Character Replacement](/dsa/go/lc/0424/README.md)||Medium|Not-Started|
+|3|[Longest Substring Without Repeating Characters](/dsa/go/lc/0003/)||Medium|Not-Started|
+|11|[Container With Most Water](/dsa/go/lc/0011/)||Medium|Not-Started|
+|15|[3Sum](/dsa/go/lc/0015/)||Medium|Not-Started|
+|49|[Group Anagrams](/dsa/go/lc/0049/)||Medium|Not-Started|
+|76|[Minimum Window Substring](/dsa/go/lc/0076/)||Hard|Not-Started|
+|121|[Best Time to Buy and Sell Stock](/dsa/go/lc/0121/)||Easy|Not-Started|
+|125|[Valid Palindrome](/dsa/go/lc/0125/)||Easy|Not-Started|
+|128|[Longest Consecutive Sequence](/dsa/go/lc/0128/)||Medium|Not-Started|
+|217|[Contains Duplicate](/dsa/go/lc/0217/)||Easy|Not-Started|
+|238|[Product of Array Except Self](/dsa/go/lc/0238/)||Medium|Not-Started|
+|242|[Valid Anagram](/dsa/go/lc/0242/)||Easy|Not-Started|
+|271|[Encode and Decode Strings](/dsa/go/lc/0271/)||Medium|Not-Started|
+|347|[Top K Frequent Elements](/dsa/go/lc/0347/)||Medium|Not-Started|
+|424|[Longest Repeating Character Replacement](/dsa/go/lc/0424/)||Medium|Not-Started|
 
 ### Notes
 [C.L.R.S - Algorithms](/dsa/notes/clrs/README.md)
