@@ -20,7 +20,10 @@
 | # | Problem | Solution | Difficulty | Status |
 |---|---------|----------|------------|--------|
 |1|[Two Sum](/dsa/go/lc/0001/README.md)||Easy|Not-Started|
+|11|[Container With Most Water](/dsa/go/lc/0011/README.md)||Medium|Not-Started|
+|15|[3Sum](/dsa/go/lc/0015/README.md)||Medium|Not-Started|
 |49|[Group Anagrams](/dsa/go/lc/0049/README.md)||Medium|Not-Started|
+|125|[Valid Palindrome](/dsa/go/lc/0125/README.md)||Easy|Not-Started|
 |128|[Longest Consecutive Sequence](/dsa/go/lc/0128/README.md)||Medium|Not-Started|
 |217|[Contains Duplicate](/dsa/go/lc/0217/README.md)||Easy|Not-Started|
 |238|[Product of Array Except Self](/dsa/go/lc/0238/README.md)||Medium|Not-Started|
