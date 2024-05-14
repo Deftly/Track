@@ -34,15 +34,16 @@ func (sr sortRunes) Swap(i, j int) {
 }
 
 func groupAnagramsRunes(strs []string) [][]string {
-	record, res := map[string][]string{}, [][]string{}
+	groups := map[string][]string{}
 	for _, str := range strs {
 		runes := []rune(str)
 		sort.Sort(sortRunes(runes))
 		sortedString := string(runes)
-		record[sortedString] = append(record[sortedString], str)
+		groups[sortedString] = append(groups[sortedString], str)
 	}
 
-	for _, v := range record {
+	res := make([][]string, 0, len(groups))
+	for _, v := range groups {
 		res = append(res, v)
 	}
 	return res
