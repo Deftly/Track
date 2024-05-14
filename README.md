@@ -23,7 +23,7 @@
 |3|[Longest Substring Without Repeating Characters](./dsa/lc/0003/)||Medium|Not-Started|
 |11|[Container With Most Water](./dsa/lc/0011/)||Medium|Not-Started|
 |15|[3Sum](./dsa/lc/0015/)||Medium|Not-Started|
-|49|[Group Anagrams](./dsa/lc/0049/)||Medium|Not-Started|
+|49|[Group Anagrams](./dsa/lc/0049/)|[Go](./dsa/lc/0049/go/groupAnagrams.go)|Medium|Not-Started|
 |76|[Minimum Window Substring](./dsa/lc/0076/)||Hard|Not-Started|
 |121|[Best Time to Buy and Sell Stock](./dsa/lc/0121/)||Easy|Not-Started|
 |125|[Valid Palindrome](./dsa/lc/0125/)||Easy|Not-Started|
