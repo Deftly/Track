@@ -24,7 +24,7 @@
 |11|[Container With Most Water](./dsa/lc/0011/)||Medium|
 |15|[3Sum](./dsa/lc/0015/)||Medium|
 |20|[Valid Parentheses](./dsa/lc/0020/)||Easy|
-|33|Search in Rotated Sorted Array](./dsa/lc/0033/)||Medium|
+|33|[Search in Rotated Sorted Array](./dsa/lc/0033/)||Medium|
 |49|[Group Anagrams](./dsa/lc/0049/)|[Go](./dsa/lc/0049/go/groupAnagrams.go)|Medium|
 |76|[Minimum Window Substring](./dsa/lc/0076/)||Hard|
 |121|[Best Time to Buy and Sell Stock](./dsa/lc/0121/)||Easy|
