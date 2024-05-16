@@ -50,3 +50,6 @@ Output: [""]
 - `1 <= strs.length <= 200`
 - `0 <= strs[i].length <= 200`
 - `strs[i]` contains any possible characters out of `256` valid ASCII characters.
+
+**Follow up:**
+- Could you write a generalized algorithm to work on any possible set of characters?
