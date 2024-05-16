@@ -17,8 +17,8 @@
 ## DSA
 
 ### Leetcode
-| # | Problem | Solution | Difficulty | Status |
-|---|---------|----------|------------|--------|
+| # | Problem | Solution | Difficulty |
+|---|---------|----------|------------|
 |1|[Two Sum](./dsa/lc/0001/)|[Go](./dsa/lc/0001/go/twoSum.go)|Easy|
 |3|[Longest Substring Without Repeating Characters](./dsa/lc/0003/)||Medium|
 |11|[Container With Most Water](./dsa/lc/0011/)||Medium|
