@@ -29,7 +29,7 @@
 |125|[Valid Palindrome](./dsa/lc/0125/)||Easy|Not-Started|
 |128|[Longest Consecutive Sequence](./dsa/lc/0128/)||Medium|Not-Started|
 |217|[Contains Duplicate](./dsa/lc/0217/)|[Go](./dsa/lc/0217/go/containsDuplicate.go)|Easy|Not-Started|
-|238|[Product of Array Except Self](./dsa/lc/0238/)||Medium|Not-Started|
+|238|[Product of Array Except Self](./dsa/lc/0238/)|[Go](./dsa/lc/0238/go/productExceptSelf.go)|Medium|Not-Started|
 |242|[Valid Anagram](./dsa/lc/0242/)|[Go](./dsa/lc/0242/go/validAnagram.go)|Easy|Not-Started|
 |271|[Encode and Decode Strings](./dsa/lc/0271/)|[Go](./dsa/lc/0271/go/encodeDecodeString.go)|Medium|Not-Started|
 |347|[Top K Frequent Elements](./dsa/lc/0347/)|[Go](./dsa/lc/0347/go/topKFrequentElements.go)|Medium|Not-Started|
