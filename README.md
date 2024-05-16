@@ -31,7 +31,7 @@
 |217|[Contains Duplicate](./dsa/lc/0217/)|[Go](./dsa/lc/0217/go/containsDuplicate.go)|Easy|Not-Started|
 |238|[Product of Array Except Self](./dsa/lc/0238/)||Medium|Not-Started|
 |242|[Valid Anagram](./dsa/lc/0242/)|[Go](./dsa/lc/0242/go/validAnagram.go)|Easy|Not-Started|
-|271|[Encode and Decode Strings](./dsa/lc/0271/)||Medium|Not-Started|
+|271|[Encode and Decode Strings](./dsa/lc/0271/)|[Go](./dsa/lc/0271/go/encodeDecodeString.go)|Medium|Not-Started|
 |347|[Top K Frequent Elements](./dsa/lc/0347/)|[Go](./dsa/lc/0347/go/topKFrequentElements.go)|Medium|Not-Started|
 |424|[Longest Repeating Character Replacement](./dsa/lc/0424/)||Medium|Not-Started|
 
