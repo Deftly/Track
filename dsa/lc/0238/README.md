@@ -21,3 +21,5 @@ Output: [0,0,9,0,0]
 - <code>2 <= nums.length <= 10<sup>5</sup></code>
 - `-30 <= nums[i] <= 30`
 - The produce of any prefix or suffix of `nums` is guaranteed to fit in a 32-bit integer.
+
+**Follow up:** Can you solve the problem in `O(1)` extra space complexity?(The output array does not count as extra space for space complexity analysis)
