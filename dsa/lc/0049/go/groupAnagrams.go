@@ -1,6 +1,7 @@
 package leetcode
 
 import (
+	"cmp"
 	"slices"
 	"sort"
 )
@@ -57,12 +58,7 @@ func groupAnagramsRunesV2(strs []string) [][]string {
 	for _, s := range strs {
 		runes := []rune(s)
 		slices.SortFunc(runes, func(a, b rune) int {
-			if a < b {
-				return -1
-			} else if a > b {
-				return 1
-			}
-			return 0
+			return cmp.Compare(a, b)
 		})
 		sortedString := string(runes)
 		groups[sortedString] = append(groups[sortedString], s)
