@@ -1,6 +1,9 @@
 package leetcode
 
-import "sort"
+import (
+	"slices"
+	"sort"
+)
 
 func groupAnagrams(strs []string) [][]string {
 	groups := make(map[[26]int][]string)
@@ -40,6 +43,29 @@ func groupAnagramsRunes(strs []string) [][]string {
 		sort.Sort(sortRunes(runes))
 		sortedString := string(runes)
 		groups[sortedString] = append(groups[sortedString], str)
+	}
+
+	res := make([][]string, 0, len(groups))
+	for _, v := range groups {
+		res = append(res, v)
+	}
+	return res
+}
+
+func groupAnagramsRunesV2(strs []string) [][]string {
+	groups := make(map[string][]string)
+	for _, s := range strs {
+		runes := []rune(s)
+		slices.SortFunc(runes, func(a, b rune) int {
+			if a < b {
+				return -1
+			} else if a > b {
+				return 1
+			}
+			return 0
+		})
+		sortedString := string(runes)
+		groups[sortedString] = append(groups[sortedString], s)
 	}
 
 	res := make([][]string, 0, len(groups))
