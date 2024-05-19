@@ -23,6 +23,7 @@
 |3|[Longest Substring Without Repeating Characters](./dsa/lc/0003/)||Medium|
 |11|[Container With Most Water](./dsa/lc/0011/)||Medium|
 |15|[3Sum](./dsa/lc/0015/)||Medium|
+|19|[Remove Nth Node From End of List](./dsa/lc/0019/)||Medium|
 |20|[Valid Parentheses](./dsa/lc/0020/)||Easy|
 |21|[Reverse Linked List](./dsa/lc/0021/)||Easy|
 |33|[Search in Rotated Sorted Array](./dsa/lc/0033/)||Medium|
@@ -31,6 +32,7 @@
 |121|[Best Time to Buy and Sell Stock](./dsa/lc/0121/)||Easy|
 |125|[Valid Palindrome](./dsa/lc/0125/)||Easy|
 |128|[Longest Consecutive Sequence](./dsa/lc/0128/)||Medium|
+|141|[Linked List Cycle](./dsa/lc/0141/)||Easy|
 |143|[Reorder List](./dsa/lc/0143/)||Medium|
 |153|[Find Minimum in Rotated Sorted Array](./dsa/lc/0153/README.md)||Medium|
 |206|[Reverse Linked List](./dsa/lc/0206/)||Easy|
