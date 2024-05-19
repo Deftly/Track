@@ -24,13 +24,16 @@
 |11|[Container With Most Water](./dsa/lc/0011/)||Medium|
 |15|[3Sum](./dsa/lc/0015/)||Medium|
 |20|[Valid Parentheses](./dsa/lc/0020/)||Easy|
+|21|[Reverse Linked List](./dsa/lc/0021/)||Easy|
 |33|[Search in Rotated Sorted Array](./dsa/lc/0033/)||Medium|
 |49|[Group Anagrams](./dsa/lc/0049/)|[Go](./dsa/lc/0049/go/groupAnagrams.go)|Medium|
 |76|[Minimum Window Substring](./dsa/lc/0076/)||Hard|
 |121|[Best Time to Buy and Sell Stock](./dsa/lc/0121/)||Easy|
 |125|[Valid Palindrome](./dsa/lc/0125/)||Easy|
 |128|[Longest Consecutive Sequence](./dsa/lc/0128/)||Medium|
+|143|[Reorder List](./dsa/lc/0143/)||Medium|
 |153|[Find Minimum in Rotated Sorted Array](./dsa/lc/0153/README.md)||Medium|
+|206|[Reverse Linked List](./dsa/lc/0206/)||Easy|
 |217|[Contains Duplicate](./dsa/lc/0217/)|[Go](./dsa/lc/0217/go/containsDuplicate.go)|Easy|
 |238|[Product of Array Except Self](./dsa/lc/0238/)|[Go](./dsa/lc/0238/go/productExceptSelf.go)|Medium|
 |242|[Valid Anagram](./dsa/lc/0242/)|[Go](./dsa/lc/0242/go/validAnagram.go)|Easy|
