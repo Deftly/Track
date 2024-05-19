@@ -26,6 +26,7 @@
 |19|[Remove Nth Node From End of List](./dsa/lc/0019/)||Medium|
 |20|[Valid Parentheses](./dsa/lc/0020/)||Easy|
 |21|[Reverse Linked List](./dsa/lc/0021/)||Easy|
+|23|[Merge k Sorted Lists](./dsa/lc/0023/)||Hard|
 |33|[Search in Rotated Sorted Array](./dsa/lc/0033/)||Medium|
 |49|[Group Anagrams](./dsa/lc/0049/)|[Go](./dsa/lc/0049/go/groupAnagrams.go)|Medium|
 |76|[Minimum Window Substring](./dsa/lc/0076/)||Hard|

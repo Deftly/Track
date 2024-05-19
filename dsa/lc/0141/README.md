@@ -27,6 +27,6 @@ Explanation: There is no cycle in the linked list.
 ```
 
 **Constraints:**
-- The number of the nodes in the list is in the range $[0, 10^4]$
-- $-10^5 <= Node.val <= 10^5$
+- The number of the nodes in the list is in the range <code>[0, 10<sup>4</sup>]</code>
+- <code>-10<sup>5</sup> <= Node.val <= 10<sup>5</sup></code>
 - `pos` is `-1` or a valid index in the linked-list.
