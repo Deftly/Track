@@ -31,8 +31,8 @@
 |49|[Group Anagrams](./dsa/lc/0049/)|[Go](./dsa/lc/0049/go/groupAnagrams.go)|Medium|
 |76|[Minimum Window Substring](./dsa/lc/0076/)||Hard|
 |121|[Best Time to Buy and Sell Stock](./dsa/lc/0121/)||Easy|
-|125|[Valid Palindrome](./dsa/lc/0125/)||Easy|
-|128|[Longest Consecutive Sequence](./dsa/lc/0128/)||Medium|
+|125|[Valid Palindrome](./dsa/lc/0125/)|[Go](./dsa/lc/0125/go/validPalindrome.go)|Easy|
+|128|[Longest Consecutive Sequence](./dsa/lc/0128/)|[Go](./dsa/lc/0128/go/longestConsecutiveSeq.go)|Medium|
 |141|[Linked List Cycle](./dsa/lc/0141/)||Easy|
 |143|[Reorder List](./dsa/lc/0143/)||Medium|
 |153|[Find Minimum in Rotated Sorted Array](./dsa/lc/0153/README.md)||Medium|
