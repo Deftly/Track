@@ -7,6 +7,7 @@ A valid BST is defined as follows:
 - Both the left and right subtrees must also be binary search trees.
 
 **Example 1:**
+
 ![ex1](./assets/tree1.jpg)
 ```
 Input: root = [2,1,3]
@@ -14,6 +15,7 @@ Output: true
 ```
 
 **Example 2:**
+
 ![ex2](./assets/tree2.jpg)
 ```
 Input: root = [5,1,4,null,null,3,6]
