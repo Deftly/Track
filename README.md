@@ -30,6 +30,10 @@
 |33|[Search in Rotated Sorted Array](./dsa/lc/0033/)||Medium|
 |49|[Group Anagrams](./dsa/lc/0049/)|[Go](./dsa/lc/0049/go/groupAnagrams.go)|Medium|
 |76|[Minimum Window Substring](./dsa/lc/0076/)||Hard|
+|98|[Validate Binary Search Tree](./dsa/lc/0098/)||Medium|
+|100|[Same Tree](./dsa/lc/0100/)||Easy|
+|102|[Binary Tree Level Order Traversal](./dsa/lc/0102/)||Medium|
+|104|[Maximum Depth of Binary Tree](./dsa/lc/0104/)||Easy|
 |121|[Best Time to Buy and Sell Stock](./dsa/lc/0121/)||Easy|
 |125|[Valid Palindrome](./dsa/lc/0125/)|[Go](./dsa/lc/0125/go/validPalindrome.go)|Easy|
 |128|[Longest Consecutive Sequence](./dsa/lc/0128/)|[Go](./dsa/lc/0128/go/longestConsecutiveSeq.go)|Medium|
@@ -38,11 +42,15 @@
 |153|[Find Minimum in Rotated Sorted Array](./dsa/lc/0153/README.md)||Medium|
 |206|[Reverse Linked List](./dsa/lc/0206/)||Easy|
 |217|[Contains Duplicate](./dsa/lc/0217/)|[Go](./dsa/lc/0217/go/containsDuplicate.go)|Easy|
+|226|[Invert Binary Tree](./dsa/lc/0226/)||Easy|
+|230|[Kth Smallest Element in a BST](./dsa/lc/0230/)||Medium|
+|235|[Lowerst Common Ancenstor of a Binary Search Tree](./dsa/lc/0235/)||Medium|
 |238|[Product of Array Except Self](./dsa/lc/0238/)|[Go](./dsa/lc/0238/go/productExceptSelf.go)|Medium|
 |242|[Valid Anagram](./dsa/lc/0242/)|[Go](./dsa/lc/0242/go/validAnagram.go)|Easy|
 |271|[Encode and Decode Strings](./dsa/lc/0271/)|[Go](./dsa/lc/0271/go/encodeDecodeString.go)|Medium|
 |347|[Top K Frequent Elements](./dsa/lc/0347/)|[Go](./dsa/lc/0347/go/topKFrequentElements.go)|Medium|
 |424|[Longest Repeating Character Replacement](./dsa/lc/0424/)||Medium|
+|572|[Subtree of Another Tree](./dsa/lc/0572/)||Easy|
 
 ### Notes
 [C.L.R.S - Algorithms](./dsa/notes/clrs/README.md)
