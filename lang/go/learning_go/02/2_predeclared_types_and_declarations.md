@@ -247,7 +247,7 @@ const typedX int = 10 // can only be assigned directly to an int
 ## Exercises
 1. Write a program that declares an integer variable called `i` with the value 20. Assign `i` to a floating-point variable named `f`. Print out `i` and `f`. [Solution](./exercises/ex1/ex1.go)
 2. Write a program that declares a constant called `value` that can be assigned to both an integer and a floating-point variable. Assign it to an integer called `i` and a floating-point variable called `f`. Print out `i` and `f`. [Solution](./exercises/ex2/ex2.go)
-3. Write a program with three variables, on named `b` of type `byte`, one named `smallI` of type `int32`, and one named `bigI` of type `uint64`. Assign each variable the maximum legal value for its type; then add `1` to each variable. Print out their values. [Solution](./exercises/ex3/ex3.go)
+3. Write a program with three variables, one named `b` of type `byte`, one named `smallI` of type `int32`, and one named `bigI` of type `uint64`. Assign each variable the maximum legal value for its type; then add `1` to each variable. Print out their values. [Solution](./exercises/ex3/ex3.go)
 
 ## Wrapping Up
 This chapter covered how to use the predeclared types, declare variables, and work with assignments and operators. The [next chapter](../03/3_composite_types.md) will look at the composite types in Go: arrays, slices, maps, and structs.
