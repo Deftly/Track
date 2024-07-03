@@ -90,13 +90,12 @@ Another difference between slices and arrays can be seen when declaring a slice 
 ```go
 var x []int
 ```
-This creates as lice of `int`s, and since no value is assigned, `x` is assigned the zero value for a slice,`nil`. In Go, `nil` is an identifier that represents the lack of a value for some types. Like numeric constants covered in the previous chapter, `nil` has no type, so it can be assigned or compared against values of different types. A `nil` slice contains nothing.
+This creates a slice of `int`s, and since no value is assigned, `x` is assigned the zero value for a slice,`nil`. In Go, `nil` is an identifier that represents the lack of a value for some types. Like numeric constants covered in the previous chapter, `nil` has no type, so it can be assigned or compared against values of different types. A `nil` slice contains nothing.
 
 A slice is the first type we've covered that isn't *comparable*. It is a compile time error to use `==` or `!=` to compare slices. The only thing you can compare a slice with using `==` is `nil`.
 
 Since Go 1.21, the `slices` package in the standard library includes two functions to compare slices. The `slices.Equal` function takes in two slices and returns `true` if the slices are the same length, and all of the elements are equal. It requires the elements of the slice to be comparable.
 
-The other function, `slices.EqualFunc`, lets you pass in a function to determine equality and does not require the slice elements to be comparable.
 ```go
 x := []int{1, 2, 3, 4, 5}
 y := []int{1, 2, 3, 4, 5}
@@ -105,6 +104,33 @@ s := []string{"a", "b", "c"}
 fmt.Println(slices.Equal(x, y)) // prints true
 fmt.Println(slices.Equal(x, z)) // prints false
 fmt.Println(slices.Equal(x, s)) // does not compile
+```
+
+The other function, `slices.EqualFunc`, lets you pass in a function to determine equality and does not require the slice elements to be comparable.
+```go
+// Example 1: Case-insensitive string comparison
+s1 := []string{"hello", "world"}
+s2 := []string{"HELLO", "WORLD"}
+equal := slices.EqualFunc(s1, s2, func(a, b string) bool {
+  return strings.EqualFold(a, b)
+})
+fmt.Printf("Case-insensitive equality: %v\n", equal)
+
+// Example 2: Custom struct comparison
+p1 := []Person{{"Alice", 30}, {"Bob", 25}}
+p2 := []Person{{"Alice", 30}, {"Bob", 26}}
+equalPerson := slices.EqualFunc(p1, p2, func(a, b Person) bool {
+  return a.Name == b.Name // Compare only by name
+})
+fmt.Printf("Person equality by name: %v\n", equalPerson)
+
+// Example 3: Approximate float comparison
+f1 := []float64{1.0, 2.0, 3.0}
+f2 := []float64{1.00001, 1.99999, 3.00002}
+equalFloat := slices.EqualFunc(f1, f2, func(a, b float64) bool {
+  return math.Abs(a-b) < 0.0001
+})
+fmt.Printf("Approximate float equality: %v\n", equalFloat)
 ```
 
 > **_WARNING:_** The `reflect` package contains a function called `DeepEqual` that can compare almost anything, including slices. Before the inclusion of `slices.Equal` and `slices.EqualFunc`, `reflect.DeepEqual` was often used to compare slices. Don't use it in new code as it is slower and less safe than using the functions in the `slices` package.
@@ -145,7 +171,7 @@ The built-in `make` function allows you to specify the type, length, and optiona
 ```go
 // Creates an int slice with a length of 5 and a capacity of 5
 // x[0] through x[4] are initialized to 0
-x := make([]int, 5) 
+x := make([]int, 5)
 ```
 
 A common beginner mistake is to try to populate those initial elements using `append`:
@@ -412,15 +438,39 @@ fmt.Println(m, len(m)) // map[] 0
 ### Comparing Maps
 Go 1.21 added a package to the standard library called `maps` that contains helper functions for working with maps. Two functions in the package are useful for comparing if two maps are equal, `maps.Equal` and `maps.EqualFunc`. They are analogous to the `slices.Equal` and `slices.EqualFunc` functions:
 ```go
-m := map[string]int{
-    "hello": 5,
-    "world": 10,
+// Example 1: Basic map comparison with maps.Equal
+m1 := map[string]int{
+  "hello": 5,
+  "world": 10,
 }
-n := map[string]int{
-    "world": 10,
-    "hello": 5,
+
+m2 := map[string]int{
+  "world": 10,
+  "hello": 5,
 }
-fmt.Println(maps.Equal(m, n)) // true
+
+m3 := map[string]int{
+  "hello": 5,
+  "world": 11,
+}
+
+fmt.Printf("m1 equal to m2: %v\n", maps.Equal(m1, m2))
+fmt.Printf("m1 equal to m3: %v\n", maps.Equal(m1, m3))
+
+// Example 2: Custom struct comparison with maps.EqualFunc
+p1 := map[string]Person{
+  "employee1": {"Alice", 30},
+  "employee2": {"Bob", 25},
+}
+p2 := map[string]Person{
+  "employee1": {"Alice", 31},
+  "employee2": {"Bob", 26},
+}
+
+equalPerson := maps.EqualFunc(p1, p2, func(v1, v2 Person) bool {
+  return v1.Name == v2.Name // Compare only by name
+})
+fmt.Printf("Person map equality by name: %v\n", equalPerson)
 ```
 
 ### Using Maps as Sets
@@ -521,7 +571,7 @@ Writing tests is another place where anonymous structs often pop up. We'll use a
 ### Comparing and Converting Structs
 Whether a struct is comparable or not depends on its fields. Structs composed entirely of comparable types are comparable. Those with slice, maps, or other fields that aren't comparable are not.
 
-Go doesn't allow comparisons between variables that represent structs of different types, however, you can perform a type conversion from one struct type to another *if the fields of both structs have the same names, order, and types:
+Go doesn't allow comparisons between variables that represent structs of different types, however, you can perform a type conversion from one struct type to another *if* the fields of both structs have the same names, order, and types:
 ```go
 type firstPerson struct {
 	name string
