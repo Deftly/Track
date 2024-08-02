@@ -454,3 +454,4 @@ fmt.Println(total)
 After the `for` loop, print out the value of `total`. What is printed out? What is the likely bug in this code? [Solution](./exercises/ex3/main.go)
 
 ## Wrapping Up
+This chapter covered blocks, shadowing, and control structures as well as best practices for using them correctly. In the [next chapter](../05/5_functions.md) we'll move on to larger programs, using functions to organize our code.
