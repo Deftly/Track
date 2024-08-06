@@ -14,6 +14,7 @@ The total volume of water trapped is 4.
 ```
 
 **Example 2:**
+
 ![trap2](./assets/trap2-3d.jpg)
 
 ```
