@@ -1,5 +1,25 @@
 # Functions
 
+<!--toc:start-->
+- [Functions](#functions)
+  - [Declaring and Calling Functions](#declaring-and-calling-functions)
+    - [Simulating Named and Optional Parameters](#simulating-named-and-optional-parameters)
+    - [Variadic Input Parameters and Slices](#variadic-input-parameters-and-slices)
+    - [Multiple Return Values](#multiple-return-values)
+    - [Ignoring Returned Values](#ignoring-returned-values)
+    - [Named Return Values](#named-return-values)
+  - [Functions Are Values](#functions-are-values)
+    - [Function Type Declarations](#function-type-declarations)
+    - [Anonymous Functions](#anonymous-functions)
+  - [Closures](#closures)
+    - [Passing Functions as Parameters](#passing-functions-as-parameters)
+    - [Returning Functions from Functions](#returning-functions-from-functions)
+  - [defer](#defer)
+  - [Go Is Call By Value](#go-is-call-by-value)
+  - [Exercises](#exercises)
+  - [Wrapping Up](#wrapping-up)
+<!--toc:end-->
+
 ## Declaring and Calling Functions
 Go has functions similar to those found in other languages but it adds its own twist on function features.
 
