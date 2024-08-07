@@ -320,16 +320,242 @@ One thing that closures allow us to do is to limit a function's scope. If a func
 Closures really become interesting when they are passed to other functions or returned from a function. This allows us to take the variables within a function and use those values *outside* of the function.
 
 ### Passing Functions as Parameters
+Since functions are values and we can specify the type of a function we can pass functions as parameters into functions. Take a moment to think about the implications of creating a closure that references local variables and then passing that closure to another function.
 
+Let's look at an example of how we can use closures to sort the same data in different ways:
+```go
+func main() {
+	type Person struct {
+		FirstName string
+		LastName  string
+		Age       int
+	}
+
+	people := []Person{
+		{"Pat", "Patterson", 37},
+		{"Tracy", "Bobdaughter", 23},
+		{"Fred", "Fredson", 18},
+	}
+	fmt.Println(people)
+
+	// sort by last name
+	sort.Slice(people, func(i, j int) bool {
+		return people[i].LastName < people[j].LastName
+	})
+	fmt.Println(people)
+
+	// sort by age
+	sort.Slice(people, func(i, j int) bool {
+		return people[i].Age < people[j].Age
+	})
+	fmt.Println(people)
+}
+```
+
+The closure that's passed to `sort.Slice` has the parameters `i` and `j`, but within the closure, `people` is used. In computer science terms, people is *captured* by the closure. This code outputs the following:
+```
+[{Pat Patterson 37} {Tracy Bobdaughter 23} {Fred Fredson 18}]
+[{Tracy Bobdaughter 23} {Fred Fredson 18} {Pat Patterson 37}]
+[{Fred Fredson 18} {Tracy Bobdaughter 23} {Pat Patterson 37}]
+```
+
+### Returning Functions from Functions
+We can also return a closure from a function, let's look at an example:
+```go
+func makeMult(base int) func(int) int {
+	return func(factor int) int {
+		return base * factor
+	}
+}
+
+func main() {
+	twoBase := makeMult(2)
+	threeBase := makeMult(3)
+	for i := 0; i < 3; i++ {
+		fmt.Println(twoBase(i), threeBase(i))
+	}
+}
+```
+
+This has the following output:
+```
+0 0
+2 3
+4 6
+```
 
 ## defer
+Programs often create temporary resources, like files or network connections, that need to be cleaned up. This cleanup must occur no matter how the function exits or whether it completed successfully or not. In Go, this cleanup code is attached to the function with the `defer` keyword.
 
+As an example we'll write a simple version of `cat` the Unix utility for printing the contents of a file:
+```go
+func main() {
+	if len(os.Args) < 2 {
+		log.Fatal("no file specified")
+	}
+	f, err := os.Open(os.Args[1])
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	data := make([]byte, 2048)
+	for {
+		count, err := f.Read(data)
+		os.Stdout.Write(data[:count])
+		if err != nil {
+			if err != io.EOF {
+				log.Fatal(err)
+			}
+			break
+		}
+	}
+}
+```
+
+You would build a run this program like so:
+```
+$ go build
+$ ./simpleCat simpleCat.go
+package main
+
+import (
+        "io"
+        "log"
+        "os"
+)
+... // the rest of the file
+```
+
+In this example we attempt to open a valid file handle, once we have that and we are done using it we will need to close it no matter how the function exits. To ensure the cleanup code runs we use the `defer` keyword, followed by a function or method call. In this case, we use the `Close` method on the file variable(we'll cover methods in [Chapter 7](../07/7_types_methods_and_interfaces.md)). The `defer` will delay the invocation of the function until the surrounding function exits. 
+
+Some important things to know about `defer`:
+  - You can use a function, method, or closure with `defer`. 
+  - When we say function with `defer`, mentally expand that to "functions, methods, or closures".
+  - You can `defer` multiple functions in a Go function. 
+    - They run in last-in, first-out(LIFO) order.
+  - The code within `defer` functions run after the return statement.
+  - The values you supply a function with input parameters to a `defer` are evaluated immediately and stored until the function runs
+
+Here's a quick example to demonstrate:
+```go
+func deferExample() int {
+	a := 10
+	defer func(val int) {
+		fmt.Println("first:", val)
+	}(a)
+	a = 20
+	defer func(val int) {
+		fmt.Println("second:", val)
+	}(a)
+	a = 30
+	fmt.Println("exiting:", a)
+	return a
+}
+```
+
+Running this code gives the following output:
+```
+exiting: 30
+second: 20
+first: 10
+```
+
+The best reason to used named return values is to allow a deferred function to examine or modify the return values of its surrounding function. This allows your code to take actions based on an error. In [chapter 9](../09/9_errors.md) we'll discuss a pattern that uses `defer` to add contextual information to an error returned from a function.
+
+This next example shows a way to handle database transaction cleanup using named return values and `defer`:
+```go
+func DoSomeInserts(ctx context.Context, db *sql.DB, value1, value2 string) (err error) {
+	tx, err := db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err == nil {
+			err = tx.Commit()
+		}
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+	_, err = tx.ExecContext(ctx, "INSERT INTO FOO (val) values $1", value1)
+	if err != nil {
+		return err
+	}
+	// use tx to do more database inserts here
+	return nil
+}
+```
+
+In this example  function we create a transaction to do a series of database inserts. If any of them fail, you want to roll back(not modify the database). If all of them succeed, you want to commit(store the database changes). You can use a closure with `defer` to check whether `err` has been assigned a value. If it hasn't we run `tx.Commit`, which could also return an error. If it does, the value `err` is modified. If any database interaction returned an error, we call `tx.Rollback`.
 
 ## Go Is Call By Value
+Go is a *call-by-value* language meaning that when you supply a variable for a parameter to a function, Go *always* makes a copy of the value of the variable. Here are some examples that demonstrate this:
+```go
+type person struct {
+	name string
+	age  int
+}
 
+func modifyFails(i int, s string, p person) {
+	i = i * 2
+	s = "Goodbye"
+	p.name = "Bob"
+}
+
+func main() {
+	p := person{}
+	i := 2
+	s := "Hello"
+	modifyFails(i, s, p)
+	fmt.Println(i, s, p) // 2 Hello { 0}
+}
+```
+
+As the function name indicates, the function won't change the values of the parameters passed into it. This behavior is a little bit different for maps and slices:
+```go
+func modMap(m map[int]string) {
+	m[2] = "hello"
+	m[3] = "goodbye"
+	delete(m, 1)
+}
+
+func modSlice(s []int) {
+	for k, v := range s {
+		s[k] = v * 2
+	}
+	s = append(s, 10)
+}
+
+func main() {
+	m := map[int]string{
+		1: "first",
+		2: "second",
+	}
+	modMap(m)
+	fmt.Println(m) // map[2:hello 3:goodbye]
+
+	s := []int{1, 2, 3}
+	modSlice(s)
+	fmt.Println(s) // [2 4 6]
+}
+```
+
+For map parameters, any changes are reflected in the variable passed to the function. For slices, you can modify any element in the slice, but you can't lengthen the slice. This behavior applies both to maps and slices that are passed directly into functions as well as map and slice fields in structs.
+
+The reason for this difference in behavior is because maps and slices are both implemented with pointers, which we'll cover in more detail in the [next chapter](../06/6_pointers.md).
 
 ## Exercises
-
+1. The simple calculator program doesn't handle one error case: division by zero. Change the function signature for the math operations to return both an `int` and an `error`. In the `div` function, if the divisor is `0`, return `errors.New("division by zero")` for the error. In all other cases, return `nil`. Adjust the `main` function to check for this error. [Solution](./exercises/ex1/main.go)
+2. Write a function called `fileLen` that has an input parameter of type `string` and returns an `int` and an `error`. The function takes in a filename and returns the number of bytes in the file. If there is an error reading the file, return the error. Use `defer` to make sure the file is closed properly. [Solution](./exercises/ex2/main.go)
+3. Write a function called `prefixer` that has an input parameter of type `string` and returns a function that has an input parameter of type `string` and returns a `string`. The returned function should prefix its input with the string passed into `prefixer`. Use the following `main` function to test `prefixer`:
+```go
+func main() {
+  helloPrefix := prefixer("Hello")
+  fmt.Println(helloPrefix("Bob")) // Should print "Hello Bob"
+  fmt.Println(helloPrefix("Maria")) // Should print "Hello Maria"
+}
+```
+[Solution](./exercises/ex3/main.go)
 
 ## Wrapping Up
-
+This chapter covered functions in Go and their unique features. The [next chapter](../06/6_pointers.md) will cover pointers and how to take advantage of them to write efficient programs.
