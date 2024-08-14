@@ -3,16 +3,17 @@ package main
 import "fmt"
 
 func main() {
-	nums := []int{2, 4, 3, 1, 6, 8, 5}
+	nums := []int{100, 82, 83, 24, 26, 32, 15, 16, 88, 0, -1, -32, 28}
 	fmt.Println(nums)
-	fmt.Println(selectionSort(nums))
+	selectionsSort(nums)
+	fmt.Println(nums)
 }
 
-func selectionSort(nums []int) []int {
+func selectionsSort(nums []int) {
 	if len(nums) <= 1 {
-		return nums
+		return
 	}
-	var min, temp int
+	var min int
 	for i := 0; i < len(nums)-1; i++ {
 		min = i
 		for j := i + 1; j < len(nums); j++ {
@@ -20,9 +21,6 @@ func selectionSort(nums []int) []int {
 				min = j
 			}
 		}
-		temp = nums[i]
-		nums[i] = nums[min]
-		nums[min] = temp
+		nums[i], nums[min] = nums[min], nums[i]
 	}
-	return nums
 }
