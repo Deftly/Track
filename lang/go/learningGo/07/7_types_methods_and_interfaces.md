@@ -154,18 +154,123 @@ Pointer receivers work like pointer function parameters, it's a copy of the poin
 ### Methods Are Functions Too
 Methods in Go are so much like functions that you can use a method in place of a function anytime there's a variable or parameter of a function type. Here's an example:
 ```go
+type Adder struct {
+	start int
+}
 
+func (a Adder) AddTo(val int) int {
+	return a.start + val
+}
+
+func main() {
+	myAdder := Adder{start: 10}
+	fmt.Println(myAdder.AddTo(5)) // 15
+  // method value
+	f1 := myAdder.AddTo // Assign method to a variable
+	fmt.Println(f1(10)) // 20
+  // method expression
+	f2 := Adder.AddTo            // Create a function from the type itself
+	fmt.Println(f2(myAdder, 15)) // 25
+}
 ```
 
+We'll see how we can use method values and method expressions when we look at dependency injection later in this chapter.
+
 ### Functions Versus Methods
+Anytime your logic depends on values that are configured at startup or changed while your program is running, those values should be stored in a struct, and that logic should be implemented as a method. If your logic depends only on the input parameters, it should be a function.
 
 ### Type Declarations Aren't Inheritance
+In addition to declaring types based on built-in Go types and struct literals, you can also declare a user-defined type based on another user defined type.
+```go
+type HighScore Score
+type Employee Person
+```
+
+This might look like inheritance but it isn't. The two types have the same underlying type, but that's all. In Go you can't assign an instance of type `HighScore` to a variable of type `Score`, or vice versa, without a type conversion, nor can you assign either of them to a variable of type `int` without a type conversion. Also, any methods defined on `Score` aren't defined on `HighScore`:
+```go
+// assigning untyped constnats is valid
+var i int = 300
+var s Score = 100
+var hs HighScore = 200
+
+hs = s            // compilation error!
+s = i             // compilation error!
+s = Score(i)      // ok
+hs = HighScore(s) // ok
+```
+
+User-defined types whose underlying types are built-in types can be assigned literals and constants compatible with the underlying type.
 
 ### Types Are Executable Documentation
+Types act as documentation, they make code clearer by providing a name for a concept and describing the kind of data that is expected. It's clearer when a method has a parameter of type `Percentage` than of type `int`, and it's harder for it to be invoked with an invalid value.
+
+The same logic applied when declaring one user-defined type based on another user defined type. When you have the same underlying data, but different sets of operations to perform, make two types. Declaring one as being based on the other avoid some repetition and make it clear that the two types are related.
 
 ## iota Is for Enumerations - Sometimes
+Many languages have the concept of enumerations which allow you to specify that a type can have only a limited set of values. Go doesn't have an enumeration type. It has `iota` which lets you assign an increasing value to a set of constants.
+
+When using `iota`, the best practice is to first define a type based on `int` that will represent all the valid values. Then we use a `const` block to define a set of values for our type:
+```go
+type MailCategory int
+
+const (
+  Uncategorized MailCategory = iota
+  Personal
+  Spam
+  Social
+  Advertisements
+)
+```
+
+The first constant in the `const` block has the type specified and its value set to `iota`. When the Go compiler sees this it repeats the type and assignment to all subsequent constants in the block. The value of `iota` increments for each constant defined in the constant block, starting with `0`. When a new `const` block is created `iota` is set back to `0`.
+
+The value of `iota` increments for each constant in the `const` block, whether or not `iota` is used to define the value of a constant: 
+```go
+const (
+	Field1 = 0        // 0
+	Field2 = 1 + iota // 2
+	Field3 = 20       // 20
+	Field4            // 20
+	Field5 = iota     // 4
+)
+```
+
+It's important to remember that nothing in Go will stop you(or anyone else) from creating additional values of your type. When you insert a new identifier in the middle of your list of literals, all subsequent ones will be renumbered. This will break your application if those constants represented values in another system or database. Because of these limitations it only makes sense to use `iota`-based enumerations when you want to be able to differentiate between a set of values and don't care what the value is behind the scenes.
 
 ## Use Embedding for Composition
+Go encourages code reuse via built-in support for composition and promotion:
+```go
+type Employee struct {
+	Name string
+	ID   string
+}
+
+func (e Employee) Description() string {
+	return fmt.Sprintf("%s (%s)", e.Name, e.ID)
+}
+
+type Manager struct {
+	Employee
+	Reports []Employee
+}
+
+func (m Manager) FindNewEmployees() []Employee {
+	// do business logic
+	return []Employee{}
+}
+
+func main() {
+	m := Manager{
+		Employee: Employee{
+			Name: "Bob Bobson",
+			ID:   "12345",
+		},
+		Reports: []Employee{},
+	}
+	fmt.Println(m.ID)            // 12345
+	fmt.Println(m.Description()) // Bob Bobson (12345)
+}
+```
 
 ## Embedding Is Not Inheritance
 
