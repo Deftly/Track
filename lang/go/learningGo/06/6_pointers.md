@@ -244,7 +244,7 @@ The second problem deals with the nature of computer hardware. While RAM means "
 
 For these reasons Go encourages us to use pointers sparingly. This reduces the GC's workload and when the GC does do work, it is optimized to return quickly rather than gather the most garbage. The key to making this approach work is to create less garbage in the first place.
 
-To learn more about heap versus stack allocation and escape analysis in Go check out this [addendum](../addendums/stack_allocation_escape_analysis.md)
+To learn more about heap versus stack allocation and escape analysis in Go check out this [addendum](../addendums/stackAllocationEscapeAnalysis.md)
 
 ## Tuning the Garbage Collector
 A GC doesn't immediately reclaim memory as soon as it is no longer referenced, doing so would seriously impact performance. Instead, it lets garbage pile up for a bit. The heap almost always contains both live data and memory that's no longer needed. The Go runtime provides users a couple of settings to control the heap's size.

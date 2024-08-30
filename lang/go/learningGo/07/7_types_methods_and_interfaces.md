@@ -256,9 +256,11 @@ type Manager struct {
 
 func (m Manager) FindNewEmployees() []Employee {
 	// do business logic
-	return []Employee{}
 }
+```
 
+Note that `Manager` contains a field of type `Employee`, but no name is assigned to that field. This makes `Employee` and *embedded field*. Any fields or methods declared on an embedded field are *promoted* to the containing struct and can be invoke directly:
+```go
 func main() {
 	m := Manager{
 		Employee: Employee{
@@ -272,19 +274,194 @@ func main() {
 }
 ```
 
+If the containing struct has fields or methods with the same name as an embedded field, you need to use the embedded field's type to refer to the obscured fields or methods:
+```go
+type Inner struct {
+	X int
+}
+
+type Outer struct {
+	Inner
+	X int
+}
+
+func main() {
+	o := Outer{
+		Inner: Inner{
+			X: 10,
+		},
+		X: 20,
+	}
+	fmt.Println(o.X)       // 20
+	fmt.Println(o.Inner.X) // 10
+}
+```
+
 ## Embedding Is Not Inheritance
+Built-in embedding support is rare in programming languages, and many developers try to understand embedding by treating it as inheritance, don't do this. You cannot assign a variable of type `Manager` to a variable of type `Employee`. To access the `Employee` field in `Manager`, you must do so explicitly:
+```go
+var eFail Employee = m // compilation error: cannot use m (type Manager) as type Employee in assignment
+var eOk Employee = m.Employee // ok
+```
+
+Go has no [*dynamic dispatch*](../addendums/dynamicDispatch.md) for concrete types. The methods on the embedded field have no idea that they are embedded. If you have a method on an embedded field that calls another method on the embedded field, and the containing struct has a method of same name, the method on the embedded field is invoked:
+```go
+type Inner struct {
+	A int
+}
+
+func (i Inner) IntPrinter(val int) string {
+	return fmt.Sprintf("Inner %d", val)
+}
+
+func (i Inner) Double() string {
+	return i.IntPrinter(i.A * 2)
+}
+
+type Outer struct {
+	S string
+	Inner
+}
+
+func (o Outer) IntPrinter(val int) string {
+	return fmt.Sprintf("Outer: %d", val)
+}
+
+func main() {
+	o := Outer{
+		Inner: Inner{
+			A: 10,
+		},
+		S: "Hello",
+	}
+	fmt.Println(o.Double()) // Inner 20
+}
+```
+
+While embedding once concrete type inside another won't allow you to treat the outer type as the inner type, the methods on an embedded field do count toward the *method set* of the containing struct. This means they can make the containing struct implement an interface.
 
 ## A Quick Lesson on Interfaces
+We'll start with looking at how to declare interfaces(the only abstract type in Go), like other user defined types you use the `type` keyword. Here's the definition of the `Stringer` interface in the `fmt` package:
+```go
+type Stringer interface {
+  String() string
+}
+```
+
+In an interface declaration, an interface literal appears which lists the methods that must be implemented by a concrete type to meet the interface. This list of methods is the method set of the interface. We mentioned previously that the method set of a pointer instance contains the methods defined with both pointer and value receivers, while the method set of a value instance contains only the methods with value receivers. Here's an example:
+```go
+type Counter struct {
+	lastUpdated time.Time
+	total       int
+}
+
+func (c *Counter) Increment() {
+	c.total++
+	c.lastUpdated = time.Now()
+}
+
+func (c Counter) String() string {
+	return fmt.Sprintf("total: %d, last updated: %v", c.total, c.lastUpdated)
+}
+
+type Incrementer interface {
+	Increment()
+}
+
+func main() {
+	var myStringer fmt.Stringer
+	var myIncrementer Incrementer
+	pointerCounter := &Counter{}
+	valueCounter := Counter{}
+
+	myStringer = pointerCounter    // ok
+	myStringer = valueCounter      // ok
+	myIncrementer = pointerCounter // ok
+	myIncrementer = valueCounter   // compile-time error
+}
+```
+
+Trying to compile this code will results in the error: `cannot use valueCounter (variable of type Counter) as Incrementer value in assignment: Counter does not implement Incrementer (method Increment has pointer receiver)`.
 
 ## Interfaces Are Type-Safe Duck Typing
+What makes interfaces in Go special is that they are implemented implicitly. A concrete type does not explicitly declare that it implements an interface. Instead, if a concrete type's method set contains all the methods in an interface's method set, the concrete type implicitly implements the interface. This allows the concrete type to be assigned to a variable or field of the interface type, enabling both type safety and decoupling, bridging the functionality found in both static and dynamic languages.
+
+Interfaces allow you to depend on behavior not an implementation, meaning we can swap implementations as needed. This allows your code to evolve over time as requirements inevitably change. Let's take a look at an example:
+```go
+type LogicProvider struct{}
+
+func (lp LogicProvider) Process(data string) string {
+	// business logic
+}
+
+type Logic interface {
+	Process(data string) string
+}
+
+type Client struct {
+	L Logic
+}
+
+func (c Client) Program() {
+	// get data from somewhere
+	c.L.Process(data)
+}
+
+func main() {
+	c := Client{
+		L: LogicProvider{},
+	}
+	c.Program()
+}
+```
+
+The Go code provides an interface, but only the caller(`Client`) knows about it. Nothing is declared on `LogicProvider` to indicate that it meets the interface. This allows both a new logic provider to be easily added in the future and provide executable documentation to ensure that any type passed into the client will match the client's needs.
+
+> **_NOTE:_** If an interface in the standard library describes what your code needs, use it. Commonly used interfaces include `io.Reader`, `io.Writer`, and `io.Closer`.
+
+It's fine for a type that meets an interface to specify additional methods that aren't part of the interface. For example, the `io.File` type meets the `io.Reader` and `io.Writer` interfaces. If your code cares only about reading from a file, use the `io.Reader` interface to refer to the file instance and ignore the other methods.
 
 ## Embedding and Interfaces
+Embedding is not only for structs. You can embed an interface in an interface. For example, the `io.ReadCloser` interface is built out of an `io.Reader` and an `io.Closer`:
+```go
+type Reader interface {
+  Read(p []byte) (n int, err error)
+}
+
+type Closer interface {
+  Close() error
+}
+
+type ReadCloser interface {
+  Reader
+  Closer
+}
+```
 
 ## Accept Interfaces, Return Structs
+Experienced Go developers will often say that your code should "Accept interfaces, return structs". This means that business logic invoked by your functions should be invoked via interfaces, but the output of your functions should be a concrete type. We've seen why functions should accept interfaces: they make your code more flexible and explicitly declare the exact functionality being used.
+
+The main reason your functions should return concrete types is that they make it easier to update your function's return values in new version of your code. When a concrete type is returned by a function, new methods and fields can be added without breaking existing code that calls the function, because the new fields and methods are ignored. Adding a new method to an interface means that existing implementations of that interface must be updated or your code breaks.
+
+Errors are the exception to this rule. We'll see in [chapter 9](../09/9_errors.md) that Go functions and methods can declare a return parameter of the `error` interface type. In the case of `error` it's quite likely that different implementations of the interface could be returned, so you need to use an interface to handle all possible options as interfaces are the only abstract type in Go.
 
 ## Interfaces and nil
+In the Go runtime, interfaces are implemented as a struct with two pointer fields, one for the value and one for the type of the value. As long as the type field in non-nil, the interface is non-nil. It is only when **both** the type and value pointers are `nil` that the interface itself also `nil`: 
+```go
+var pointerCounter *Counter
+fmt.Println(pointerCounter == nil) // true
+var incrementer Incrementer
+fmt.Println(incrementer == nil) // true
+incrementer = pointerCounter
+fmt.Println(incrementer == nil) // false
+```
+
+What `nil` indicates for a variable with an interface type is whether you can invoke methods on it. We've seen previously that you can invoke methods on `nil` concrete instances, so it makes sense that you can invoke methods on an interface variable that was assigned a `nil` concrete instance. If an interface variable is `nil`, invoking any methods on it will trigger a panic.
+
+Since an interface instance with a non-nil type is not equal to `nil`, it's not straightforward to tell whether the value associated with the interface is `nil`. You have to use reflection(covered in [chapter 16](../16/16_reflect_unsafe_cgo.md)) to find out.
 
 ## Interfaces Are Comparable
+In [chatper 3](../03/3_composite_types.md) we covered comparable types, the ones that can be checked for equality with `==`. Interfaces are also comparable. Two instances of an interface type are equal if their types are equal and their values are equal. But what happens if the type isn't comparable? Let's look at an example:
 
 ## The Empty Interface Says Nothing
 
