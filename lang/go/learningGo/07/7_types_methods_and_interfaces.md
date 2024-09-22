@@ -462,14 +462,199 @@ Since an interface instance with a non-nil type is not equal to `nil`, it's not 
 
 ## Interfaces Are Comparable
 In [chatper 3](../03/3_composite_types.md) we covered comparable types, the ones that can be checked for equality with `==`. Interfaces are also comparable. Two instances of an interface type are equal if their types are equal and their values are equal. But what happens if the type isn't comparable? Let's look at an example:
+```go
+type Doubler interface {
+	Double()
+}
+
+type DoubleInt int
+
+func (d *DoubleInt) Double() {
+	*d = *d * 2
+}
+
+type DoubleIntSlice []int
+
+func (d DoubleIntSlice) Double() {
+	for i := range d {
+		d[i] = d[i] * 2
+	}
+}
+
+func DoublerCompare(d1, d2 Doubler) {
+	fmt.Println(d1 == d2)
+}
+
+func main() {
+	var di DoubleInt = 10
+	var di2 DoubleInt = 10
+	dis := DoubleIntSlice{1, 2, 3}
+	dis2 := DoubleIntSlice{1, 2, 3}
+	// false because we are comparing pointers, and they point to different values
+	DoublerCompare(&di, &di2)
+	// false because they have different underlying types
+	DoublerCompare(&di, dis)
+	// triggers a panic, because the underlying types match but are a
+	// non-comparable type
+	DoublerCompare(dis, dis2)
+}
+```
+
+Also, remember that the key of a map must be comparable, so a map can be defined to have an interface as a key: `m := map[Doubler]int{}`
+
+If you were to add a key-value pair to this map and they key isn't comparable, that will also trigger a panic.
+
+Given this behavior, be careful when using `==` or `!=` with interfaces or using an interface as a map key as this can easily generate a panic and crash your program. Even if all your interface implementations are currently comparable, you don't know what will happen if someone else uses or modifies your code, and there's no way to specify that an interface can only be implemented by comparable types. To be extra safe you can use the `Comparable` method on `reflect.Value` to inspect an interface before using it with `==` or `!=`.(We'll cover reflection in [chapter 16](../16/16_reflect_unsafe_cgo.md))
 
 ## The Empty Interface Says Nothing
+Sometimes in a statically typed language we need a way to say that a variable could store a value of any type. For this Go uses an *empty interface*, `interface{}` to represent this:
+```go
+var i interface{}
+i = 20
+i = "hello"
+i = struct {
+  FirstName string
+  LastName  string
+}{"Fred", "Fredson"}
+```
+
+To improve readability, Go added `any` in Go 1.18 as a type alias for `interface{}`
+
+Because an empty interface doesn't tell you anything about the value it represents, you can't do a lot with it. A common use of `any` is as a placeholder for data of uncertain schema that's read from an external source, like a JSON file:
+```go
+data := map[string]any{}
+contents, err := os.ReadFile("testdata/sample.json")
+if err != nil {
+  return err
+}
+json.Unmarshal(contents, &data)
+// the contents are now in the data map
+```
+
+> **_NOTE:_** User-created data containers written before generics used the empty interface  to store values of any type. Now that generics are part of Go it is recommended that you use them for any newly created data containers. Generics provide type safety, compile-time checking, and eliminate the need for type assertions, resulting in more robust and maintainable code.
+
+In general you should avoid using `any`. Go is a strongly typed language and attempts to work around this are unidiomatic.
+
+If you do end up storing a value into an empty interface you will need to use type assertions and type switches to read the value back again.
 
 ## Type Assertions and Type Switches
+A *type assertion* names the concrete type that implemented the interface, or names another interface that is also implemented by the concrete type whose value is stored in the interface.
+```go
+type MyInt int
+
+func main() {
+	var i any
+	var mine MyInt = 20
+	i = mine
+	i2 := i.(MyInt) // i2 is of type MyInt
+	fmt.Println(i2 + 1)
+}
+```
+
+If the type assertion is wrong the code will panic like in this example:
+```go
+i2 := i.(string)
+fmt.Println(i2) // panic: interface conversion: interface {} is main.MyInt, not string
+```
+
+Even if two types share an underlying type, a type assertion must match the type of the value stored in the interface:
+```go
+i2 := i.(int)
+fmt.Println(i2 + 1) // panic: interface conversion: interface {} is main.MyInt, not int
+```
+
+To avoid crashing we use the comma ok idiom:
+```go
+i2, ok := i.(int)
+if !ok {
+  return fmt.Errorf("unexpected type for %v", i)
+}
+fmt.Println(i2 + 1)
+```
+
+When an interface could be one of multiple possible types, use a *type switch* instead:
+```go
+func doThings(i any) {
+	switch j := i.(type) {
+	case nil:
+		// i is nil, type of j is any
+	case int:
+		// j is of type int
+	case MyInt:
+		// j is of type MyInt
+	case io.Reader:
+		// j is of type io.Reader
+	case string:
+		// j is a string
+	case bool, rune:
+		// i is either a bool or rune, so j is of type any
+	default:
+		// no idea what i is, so j is of type any
+	}
+}
+```
+
+> **_NOTE:_** Since the purpose of a type `switch` is to derive a new variable from an existing one, it is idiomatic to assign the variable being switched on to a variable of the same name(`i := i.(type)`), making this one of the few places where shadowing is a good idea.
+
+While the examples so far have use the `any` interface with type assertions and type switches, you can uncover the concrete type from all interface types.
 
 ## Use Type Assertions and Type Switches Sparingly
+While being able to extract the concrete implementation from an interface variable can be handy you should use the techniques infrequently. In most cases you should treat a parameter or return value as the type that was supplied and not what else it could be. Otherwise your function's API isn't accurately declaring the types it needs to perform its task.
+
+One common use of a type assertion is to see if the concrete type behind the interface also implements another interface. For example, the standard library uses this technique to allow more efficient copies when the `io.Copy` function is called. This functions has two parameters of types `io.Writer` and `io.Reader` and calls the `io.copyBuffer` function to do its work. If the `io.Writer` parameter also implements `io.WriterTo`, or the `io.Reader` parameter also implements `io.ReaderFrom`, most of the work in the function can be skipped:
+```go
+// copyBuffer is the actual implementation of Copy and CopyBuffer.
+// if buf is nil, one is allocated.
+func copyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error) {
+	// If the reader has a WriteTo method, use it to do the copy.
+	// Avoids an allocation and a copy.
+	if wt, ok := src.(WriterTo); ok {
+		return wt.WriteTo(dst)
+	}
+	// Similarly, if the writer has a ReadFrom method, use it to do the copy.
+	if rt, ok := dst.(ReaderFrom); ok {
+		return rt.ReadFrom(src)
+	}
+  // function continues...
+}
+```
+
+This optional interface technique has one drawback. It's common for implementations of interfaces to use the decorator pattern to wrap other implementations of the same interface to layer behavior. The problem is that if an optional interface is implemented by one of the wrapped implementations, you cannot detect it with a type assertion or type switch. For example, the standard library includes a `bufio` package that provides a buffered reader. We can buffer any other `io.Reader` implementation by passing it to the `bufio.NewReader` function and using the returned `*bufio.Reader`. If the passed-in `io.Reader` also implemented the `io.ReaderFrom`, wrapping it in a buffered reader prevents the optimization we saw earlier.
+
+Type `switch` statements give us the ability to differentiate between multiple implementations of an interface that require different processing. They are most useful when only certain possible valid types can be supplied for an interface. Be sure to include a `default` case to handle implementations that aren't known at development time. This also protects you if you forget to update the type `switch` statements when new interface implementations are added:
+```go
+func walkTree(t *treeNode) (int, error) {
+	switch val := t.val.(type) {
+	case nil:
+		return 0, errors.New("invalid expression")
+	case number:
+		// we know that t.val is of type number, so return the
+		// int value
+		return int(val), nil
+	case operator:
+		// we know that t.val is of type operator, so
+		// find the values of the left and right children, then
+		// call the process() method on operator to return the
+		// result of processing their values.
+		left, err := walkTree(t.lchild)
+		if err != nil {
+			return 0, err
+		}
+		right, err := walkTree(t.rchild)
+		if err != nil {
+			return 0, err
+		}
+		return val.process(left, right), nil
+	default:
+		// if a new treeVal type is defined, but walkTree wasn't updated
+		// to process it, this detects it
+		return 0, errors.New("unknown node type")
+	}
+}
+```
 
 ## Function Types Are a Bridge to Interfaces
+
 
 ## Implicit Interfaces Make Dependency Injection Easier
 
